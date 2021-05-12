@@ -1,0 +1,17 @@
+repos:
+  - repo: https://github.com/psf/black
+    rev: 20.8b1
+    hooks:
+    - id: black
+
+  - repo: https://gitlab.com/PyCQA/flake8
+    rev: 3.8.3
+    hooks:
+    -   id: flake8
+        args: [--max-line-length=131]
+  - repo: https://github.com/pycqa/isort
+    rev: 5.8.0
+    hooks:
+      - id: isort
+        name: isort (python)
+
