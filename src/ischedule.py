@@ -15,8 +15,12 @@ _tasks: List[_Task] = []
 
 def schedule(func: Callable, interval: Union[timedelta, float]):
     """
+    Args:
+        func: scheduled functions
+        interval: how often the function is called. Either a `datetime.timedelta` or a number of seconds
 
-    Raises: TypeError if the interval cannot be converted to timedelta seconds
+    Raises:
+        TypeError if the interval cannot be interpreted as timedelta seconds
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError

@@ -15,3 +15,9 @@ repos:
       - id: isort
         name: isort (python)
 
+  - repo: https://github.com/terrencepreilly/darglint
+    rev: master
+    hooks:
+      - id: darglint
+        args: [-v 2]
+        name: Darglint
