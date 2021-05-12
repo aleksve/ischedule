@@ -37,8 +37,10 @@ def check_time_slip():
 
 
 def test():
-    ischedule.schedule(partial(execute_N_times_and_throw_exception, N=N_seconds), 1)
-    ischedule.schedule(check_time_slip, _PERIOD)
+    ischedule.schedule(
+        partial(execute_N_times_and_throw_exception, N=N_seconds), interval=1
+    )
+    ischedule.schedule(check_time_slip, interval=_PERIOD)
     with pytest.raises(InterruptedError):
         while True:
             ischedule.run_pending()
@@ -61,10 +63,25 @@ def skip_execution():
 
 
 def test_skip():
-    ischedule.schedule(partial(execute_N_times_and_throw_exception, N=N_seconds), 1)
-    ischedule.schedule(skip_execution, skip_sched_time)
+    ischedule.schedule(
+        partial(execute_N_times_and_throw_exception, N=N_seconds), interval=1
+    )
+    ischedule.schedule(skip_execution, interval=skip_sched_time)
 
     with pytest.raises(InterruptedError):
         while True:
             ischedule.run_pending()
             time.sleep(GRANULARITY)
+
+
+@pytest.fixture(autouse=True)
+def reset_scheduler():
+    print("reset")
+    global _i
+    _i = 0
+    ischedule.reset()
+
+
+if __name__ == "__main__":
+    reset_scheduler()
+    test()

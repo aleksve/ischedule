@@ -13,7 +13,7 @@ class _Task:
 _tasks: List[_Task] = []
 
 
-def schedule(func: Callable, interval: Union[timedelta, float]):
+def schedule(func: Callable, *, interval: Union[timedelta, float]):
     """
     Args:
         func: scheduled functions
@@ -37,3 +37,7 @@ def run_pending():
             task.previous_call += task.interval * i_intervals_since_last_call
             task.missed_executions += i_intervals_since_last_call - 1
             task.func()
+
+
+def reset():
+    _tasks.clear()
