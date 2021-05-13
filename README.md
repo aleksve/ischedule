@@ -11,26 +11,47 @@ An elegant and simple way to schedule periodic tasks in Python. Created because 
 
 **Example**
 ```python
-from src.ischedule import schedule, run_pending
 import time
 
-N_job_1 = 0
-
-def job_1():
-    global N_job_1
-    N_job_1 += 1
-    print(f"Doing a fast job {N_job_1}")
-
-def job_2():
-    print("Simulating a job that takes much time to complete.")
-    time.sleep(1)
-
-
-schedule(job_1, interval=0.1)
-schedule(job_2, interval=1)
+from src.ischedule import schedule, run_loop
+from threading import Event
 
 start_time = time.time()
-while start_time + 2 > time.time():
-    run_pending()
-    time.sleep(0.01)
+stop_event = Event()
+
+def job_1():
+    dt = time.time() - start_time
+    print(f"Started a _fast_ job at t={dt:.2f}")
+    if dt > 3:
+        stop_event.set()
+
+def job_2():
+    dt = time.time() - start_time
+    if dt > 2:
+        return
+    print(f"Started a *slow* job at t={dt:.2f}")
+    time.sleep(1)
+
+schedule(job_1, interval=0.1)
+schedule(job_2, interval=0.5)
+
+run_loop(stop_event=stop_event)
 ```
+This example produces the following output:
+```
+Started a _fast_ job at t=0.10
+Started a _fast_ job at t=0.20
+Started a _fast_ job at t=0.31
+Started a _fast_ job at t=0.41
+Started a _fast_ job at t=0.50
+Started a *slow* job at t=0.50
+Started a _fast_ job at t=1.51
+Started a *slow* job at t=1.51
+Started a _fast_ job at t=2.52
+Started a _fast_ job at t=2.61
+Started a _fast_ job at t=2.71
+Started a _fast_ job at t=2.81
+Started a _fast_ job at t=2.90
+Started a _fast_ job at t=3.00
+```
+The fast job runs every 0.1 seconds, and completes quickly. When the slow job starts running at t=0.5, it doesn't return control until one second later, at t=1.50s. By that time, both the fast and the slow job become pending, and are executed in the order they were added to the scheduler. The slow job does not run after t=2.0, so the fast job returns to running normally every 0.1 seconds. 

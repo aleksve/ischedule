@@ -50,7 +50,7 @@ def reset():
     _tasks.clear()
 
 
-def run_loop(sleep_interval: Union[timedelta, float] = 0.05, stop_event: Event = None):
+def run_loop(sleep_interval: Union[timedelta, float] = 0.01, stop_event: Event = None):
     """
     Runs the pending tasks until the event is set.
 
