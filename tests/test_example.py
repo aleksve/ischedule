@@ -3,7 +3,7 @@ from threading import Event
 
 import pytest
 
-from src.ischedule import reset, run_loop, schedule
+from src.ischedule.ischedule import reset, run_loop, schedule
 
 
 def test_example():

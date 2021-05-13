@@ -10,14 +10,16 @@ An elegant and simple way to schedule periodic tasks in Python. Created because 
 
 
 **Example**
+
 ```python
 import time
 
-from src.ischedule import schedule, run_loop
+from src.ischedule.ischedule import schedule, run_loop
 from threading import Event
 
 start_time = time.time()
 stop_event = Event()
+
 
 def job_1():
     dt = time.time() - start_time
@@ -25,12 +27,14 @@ def job_1():
     if dt > 3:
         stop_event.set()
 
+
 def job_2():
     dt = time.time() - start_time
     if dt > 2:
         return
     print(f"Started a *slow* job at t={dt:.2f}")
     time.sleep(1)
+
 
 schedule(job_1, interval=0.1)
 schedule(job_2, interval=0.5)

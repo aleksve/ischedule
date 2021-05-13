@@ -5,7 +5,7 @@ from threading import Event
 
 import pytest
 
-from src import ischedule
+from src.ischedule import ischedule
 
 GRANULARITY = 1e-4
 
