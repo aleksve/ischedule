@@ -19,5 +19,5 @@ repos:
     rev: master
     hooks:
       - id: darglint
-        args: [-v 2]
+        args: [-v 2, --indentation 4]
         name: Darglint
