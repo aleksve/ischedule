@@ -33,9 +33,11 @@ task 2
 ```
 
 **Implemnentation details**
+
 Periodic scheduling has certain quirks that have been taken care of under the hood by ```ischedule```. For example, it accounts for the time it takes for the task function to execute. If a task is scheduled every second and takes 0.6 seconds to complete, there will be a delay of only 0.4 seconds between consecutive executions.  Delays are not propagated. If the previously-mentioned task is scheduled for execution at t=1 second, but is delayed by 0.3 seconds, the next execution of the same task will never the less be scheduled at t=2 seconds. 
 
 **What happens during heavy loading**
+
 * If more than one task become pending at the same time, they are executed in the order in which they were scheduled by `schedule`.
 * Regardless of the load, no task will be completely starved. All pending tasks will be executed as soon as possible after they become pending.
 * If the execution of a task is delayed that the next execution of the same task become pending, this execution will be skipped.
