@@ -24,6 +24,7 @@ def schedule(func: Callable, *, interval: Union[timedelta, float]):
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
+        Exception: Any exception raised by the tasks will propagate through here. 
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
