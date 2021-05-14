@@ -57,13 +57,14 @@ In this example, two jobs are scheduled for periodic execution. The first one is
 ```python
 import time
 
+from functools import partial
 from ischedule import schedule, run_loop
 from threading import Event
 
 start_time = time.time()
 stop_event = Event()
 
-def job_1():
+def job_1(stop_time: float):
     dt = time.time() - start_time
     print(f"Started a _fast_ job at t={dt:.2f}")
     if dt > 3:
@@ -76,7 +77,7 @@ def job_2():
     print(f"Started a *slow* job at t={dt:.2f}")
     time.sleep(1)
 
-schedule(job_1, interval=0.1)
+schedule(partial(job_1, stop_time=3.0), interval=0.1)
 schedule(job_2, interval=0.5)
 
 run_loop(stop_event=stop_event)
