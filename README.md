@@ -51,6 +51,7 @@ Exceptions during the execution are propagated out of `run_pending`, and can be 
 If `run_loop()` is executed without parameters, it will continue running until the process is terminated. If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, run_loop will cleanly return to the caller after completing the currently pending tasks.
 
 **More advanced example**
+
 In this example, two jobs are scheduled for periodic execution. The first one is scheduled with an interval of 0.1 seconds, and the second one is scheduled with an interval of 0.5 seconds. The second job takes a lot of time to complete, stress-testing the scheduler.
 
 ```python
