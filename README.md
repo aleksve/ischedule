@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in Python. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks. 
+An elegant way to schedule periodic tasks in Python. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.
 
 **Sample use**
 ```python
