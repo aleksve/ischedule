@@ -12,6 +12,9 @@ class _Task:
         self.previous_call = monotonic()
         self.missed_executions = 0
 
+    def next_call(self) -> float:
+        return self.previous_call + self.interval.total_seconds()
+
 
 _tasks: List[_Task] = []
 
@@ -50,27 +53,23 @@ def reset():
     _tasks.clear()
 
 
-def run_loop(sleep_interval: Union[timedelta, float] = 0.01, stop_event: Event = None):
+def run_loop(stop_event: Event = None):
     """
     Runs the pending tasks until the event is set.
 
     Args:
-        sleep_interval: how long to sleep between the pending task exections.
-            Checking if any tasks are pending doesn't take much processing time, but doing so without
-            any pause would still take 100% CPU time
         stop_event: run until this event is set. If `None`, run until the program is terminated
 
     Raises:
         TypeError: the supplied sleep_interval cannot be interpreted as a number of seconds
         Exception: All exceptions raised by the tasks will propagate through here
     """
-    if not isinstance(sleep_interval, timedelta):
-        sleep_interval = timedelta(seconds=sleep_interval)
-    sleep_interval = sleep_interval.total_seconds()
 
     if stop_event is None:
         stop_event = Event()
+    assert isinstance(stop_event, Event)
 
     while not stop_event.is_set():
         run_pending()
-        time.sleep(sleep_interval)
+        next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
+        time.sleep(max(0.0, next_call_time))
