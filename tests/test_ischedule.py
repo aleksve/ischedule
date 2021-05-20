@@ -32,9 +32,9 @@ def check_time_slip():
     else:
         t += _PERIOD
 
-    dt = abs(time.time() - t)
+    dt = time.time() - t
     print(dt)
-    assert dt < _PERIOD / 10 + GRANULARITY * 10 + 0.01
+    assert abs(dt) < 1e-3
     time.sleep(_PERIOD / 2)
 
 
@@ -44,9 +44,7 @@ def test():
     )
     ischedule.schedule(check_time_slip, interval=_PERIOD)
     with pytest.raises(InterruptedError):
-        while True:
-            ischedule.run_pending()
-            time.sleep(GRANULARITY)
+        ischedule.run_loop()
 
 
 skip_time = 0
@@ -85,9 +83,7 @@ def test_timedelta():
         interval=timedelta(milliseconds=100),
     )
     with pytest.raises(InterruptedError):
-        while True:
-            ischedule.run_pending()
-            time.sleep(0.1)
+        ischedule.run_loop()
 
 
 stop_event = Event()
@@ -116,3 +112,7 @@ def reset_scheduler():
     global _i
     _i = 0
     ischedule.reset()
+
+
+if __name__ == "__main__":
+    pytest.main()
