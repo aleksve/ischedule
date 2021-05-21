@@ -6,7 +6,7 @@ An elegant way to schedule periodic tasks in a Python program. Both the schedulu
 from ischedule import schedule, run_loop
 
 
-schedule(interval=1.0)
+@schedule(interval=1.0)
 def task_1():
     print("task 1")
 
