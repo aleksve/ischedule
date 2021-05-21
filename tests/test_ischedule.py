@@ -55,16 +55,17 @@ def test():
     ischedule.schedule(check_time_slip, interval=_PERIOD)
     ischedule.run_loop(stop_event)
     max_startup_time_deviations = max(_startup_time_deviations)
-    assert (
-        max_startup_time_deviations <= 1e-3
-    ), "The precision tolerance of task execution time was exceeded."
     mean_deviation = sum(_startup_time_deviations) / len(_startup_time_deviations)
-    assert (
-        mean_deviation <= 1e-4
-    ), "The precision tolerance of task execution time was exceeded."
     print(
         f"max deviation: {max_startup_time_deviations}; mean deviation: {mean_deviation}"
     )
+    assert (
+        max_startup_time_deviations <= 1e-3
+    ), "The precision tolerance of task execution time was exceeded."
+
+    assert (
+        mean_deviation <= 1e-4
+    ), "The precision tolerance of task execution time was exceeded."
 
 
 skip_time = 0
