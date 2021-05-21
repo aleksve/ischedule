@@ -21,32 +21,50 @@ def execute_N_times_and_throw_exception(N: int):
     _i += 1
 
 
-t = 0
+_t_0_set_event_after = None
+
+
+def set_event_after(t: float, event: Event):
+    global _t_0_set_event_after
+    if _t_0_set_event_after is None:
+        _t_0_set_event_after = time.monotonic()
+    if _t_0_set_event_after + t < time.monotonic():
+        event.set()
+
+
+t_startup_time_dev = 0
 _PERIOD = 0.01
+_startup_time_deviations = []
 
 
 def check_time_slip():
-    global t
-    if not t:
-        t = time.time()
+    global t_startup_time_dev
+    if not t_startup_time_dev:
+        t_startup_time_dev = time.time()
     else:
-        t += _PERIOD
+        t_startup_time_dev += _PERIOD
 
-    dt = abs(time.time() - t)
-    print(dt)
-    assert dt < _PERIOD / 10 + GRANULARITY * 10 + 0.01
+    start_time_deviation = time.time() - t_startup_time_dev
+    _startup_time_deviations.append(start_time_deviation)
     time.sleep(_PERIOD / 2)
 
 
 def test():
-    ischedule.schedule(
-        partial(execute_N_times_and_throw_exception, N=N_seconds), interval=1
-    )
+    stop_event = Event()
+    ischedule.schedule(partial(set_event_after, t=10, event=stop_event), interval=1)
     ischedule.schedule(check_time_slip, interval=_PERIOD)
-    with pytest.raises(InterruptedError):
-        while True:
-            ischedule.run_pending()
-            time.sleep(GRANULARITY)
+    ischedule.run_loop(stop_event)
+    max_startup_time_deviations = max(_startup_time_deviations)
+    assert (
+        max_startup_time_deviations <= 1e-3
+    ), "The precision tolerance of task execution time was exceeded."
+    mean_deviation = sum(_startup_time_deviations) / len(_startup_time_deviations)
+    assert (
+        mean_deviation <= 1e-4
+    ), "The precision tolerance of task execution time was exceeded."
+    print(
+        f"max deviation: {max_startup_time_deviations}; mean deviation: {mean_deviation}"
+    )
 
 
 skip_time = 0
@@ -85,9 +103,7 @@ def test_timedelta():
         interval=timedelta(milliseconds=100),
     )
     with pytest.raises(InterruptedError):
-        while True:
-            ischedule.run_pending()
-            time.sleep(0.1)
+        ischedule.run_loop()
 
 
 stop_event = Event()
@@ -116,3 +132,7 @@ def reset_scheduler():
     global _i
     _i = 0
     ischedule.reset()
+
+
+if __name__ == "__main__":
+    pytest.main()
