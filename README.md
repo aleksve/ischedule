@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in Python programs. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
+An elegant way to schedule periodic tasks in Python programs. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.
 
 **Basic example**
 
@@ -106,3 +106,5 @@ The fast job runs every 0.1 seconds, and completes quickly. When the slow job st
 **Known issues**
 
 None at this time. Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues.
+
+[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
