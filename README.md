@@ -1,6 +1,4 @@
-[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
-
-An elegant way to schedule periodic tasks in Python programs. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.
+An elegant way to schedule periodic tasks in Python programs. Both the scheduluer and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
 
 **Basic example**
 
