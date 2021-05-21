@@ -26,7 +26,7 @@ def reset():
 def schedule(func: Callable = None, *, interval: Union[timedelta, float]) -> Callable:
     """
     Args:
-        func: The function to schedule. If `None`, return a decorator with the supplied interval
+        func: The function to schedule. If `None` is supplied, return a decorator with the supplied interval
         interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
 
     Raises:

@@ -3,7 +3,7 @@ An elegant way to schedule periodic tasks in a Python program. Both the schedulu
 **Basic example**
 
 ```python
-from ischedule import schedule, run_loop
+from src.ischedule import schedule, run_loop
 
 
 @schedule(interval=1.0)
