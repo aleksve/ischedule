@@ -23,10 +23,14 @@ def reset():
     _tasks.clear()
 
 
-def schedule(func: Callable = None, *, interval: Union[timedelta, float]) -> Callable:
+def schedule(
+    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
+) -> Callable:
     """
+    Schedule a period task with an interval. Can be used as a decorator.
+
     Args:
-        func: The function to schedule. If `None` is supplied, return a decorator with the supplied interval
+        func: The function to schedule. This parameter will be supplied implicitly when used as a decorator.
         interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
 
     Raises:
@@ -39,6 +43,7 @@ def schedule(func: Callable = None, *, interval: Union[timedelta, float]) -> Cal
         # Raises TypeError
         interval = timedelta(seconds=interval)
     if func is None:
+        # Used as a decorator
         return partial(schedule, interval=interval)
     else:
         _tasks.append(_Task(func, interval))
