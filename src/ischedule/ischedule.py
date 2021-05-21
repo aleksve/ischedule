@@ -24,7 +24,6 @@ def schedule(func: Callable, *, interval: Union[timedelta, float]):
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
-        Exception: Any exception raised by the tasks will propagate through here. 
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
@@ -63,6 +62,7 @@ def run_loop(sleep_interval: Union[timedelta, float] = 0.01, stop_event: Event =
 
     Raises:
         TypeError: the supplied sleep_interval cannot be interpreted as a number of seconds
+        Exception: All exceptions raised by the tasks will propagate through here
     """
     if not isinstance(sleep_interval, timedelta):
         sleep_interval = timedelta(seconds=sleep_interval)
