@@ -32,6 +32,4 @@ def test_example():
 @pytest.fixture(autouse=True)
 def reset_scheduler():
     print("reset")
-    global _i
-    _i = 0
     reset()

@@ -60,12 +60,12 @@ def test():
         f"max deviation: {max_startup_time_deviations}; mean deviation: {mean_deviation}"
     )
     assert (
-        max_startup_time_deviations <= 1e-3
-    ), "The precision tolerance of task execution time was exceeded."
+        max_startup_time_deviations <= 2e-3
+    ), "The precision tolerance of max start time deviation was exceeded."
 
     assert (
         mean_deviation <= 1e-4
-    ), "The precision tolerance of task execution time was exceeded."
+    ), "The precision tolerance of mean start time deviation was exceeded."
 
 
 skip_time = 0

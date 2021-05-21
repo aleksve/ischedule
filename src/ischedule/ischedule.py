@@ -26,7 +26,7 @@ def schedule(func: Callable, *, interval: Union[timedelta, float]):
     """
     Args:
         func: scheduled functions
-        interval: how often the function is called. Either a `datetime.timedelta` or a number of seconds
+        interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
