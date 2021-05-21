@@ -55,7 +55,7 @@ In this example, two jobs are scheduled for periodic execution. The first one is
 ```python
 import time
 
-from src.ischedule import schedule, run_loop
+from ischedule import schedule, run_loop
 from threading import Event
 
 start_time = time.time()
