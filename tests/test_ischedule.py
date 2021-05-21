@@ -40,11 +40,11 @@ _startup_time_deviations = []
 def check_time_slip():
     global t_startup_time_dev
     if not t_startup_time_dev:
-        t_startup_time_dev = time.time()
+        t_startup_time_dev = time.monotonic()
     else:
         t_startup_time_dev += _PERIOD
 
-    start_time_deviation = time.time() - t_startup_time_dev
+    start_time_deviation = time.monotonic() - t_startup_time_dev
     _startup_time_deviations.append(start_time_deviation)
     time.sleep(_PERIOD / 2)
 
