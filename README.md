@@ -83,20 +83,20 @@ print("Finished")
 ```
 Output:
 ```
-Started a _fast_ job at t=0.10
-Started a _fast_ job at t=0.20
-Started a _fast_ job at t=0.31
-Started a _fast_ job at t=0.41
-Started a _fast_ job at t=0.50
-Started a *slow* job at t=0.50
-Started a _fast_ job at t=1.51
-Started a *slow* job at t=1.51
-Started a _fast_ job at t=2.52
-Started a _fast_ job at t=2.61
-Started a _fast_ job at t=2.71
-Started a _fast_ job at t=2.81
-Started a _fast_ job at t=2.90
-Started a _fast_ job at t=3.00
+Started a _fast_ task at t=0.10
+Started a _fast_ task at t=0.20
+Started a _fast_ task at t=0.30
+Started a _fast_ task at t=0.40
+Started a _fast_ task at t=0.50
+Started a *slow* task at t=0.50
+Started a _fast_ task at t=1.50
+Started a *slow* task at t=1.50
+Started a _fast_ task at t=2.50
+Started a _fast_ task at t=2.60
+Started a _fast_ task at t=2.70
+Started a _fast_ task at t=2.80
+Started a _fast_ task at t=2.90
+Started a _fast_ task at t=3.00
 Finished
 ```
 The fast task runs every 0.1 seconds, and completes quickly. When the slow task starts running at t=0.5, it doesn't return control until one second later, at t=1.50s. By that time, both the fast and the slow tasks become pending, and are executed in the order they were added to the scheduler. The slow task does not run after t=2.0, so the fast task returns to running normally every 0.1 seconds.
