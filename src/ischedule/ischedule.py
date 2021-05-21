@@ -1,4 +1,5 @@
 from datetime import timedelta
+from functools import partial
 from threading import Event
 from time import monotonic
 from typing import Callable, List, Optional, Union
@@ -22,19 +23,26 @@ def reset():
     _tasks.clear()
 
 
-def schedule(func: Callable, *, interval: Union[timedelta, float]):
+def schedule(func: Callable = None, *, interval: Union[timedelta, float]) -> Callable:
     """
     Args:
-        func: scheduled functions
+        func: The function to schedule. If `None`, return a decorator with the supplied interval
         interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
+
+    Returns:
+        passes through `func`; if `func` is not yet supplied, returns a decorator
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
         interval = timedelta(seconds=interval)
-    _tasks.append(_Task(func, interval))
+    if func is None:
+        return partial(schedule, interval=interval)
+    else:
+        _tasks.append(_Task(func, interval))
+        return func
 
 
 def run_pending():
