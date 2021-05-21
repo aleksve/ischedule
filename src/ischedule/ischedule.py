@@ -27,7 +27,7 @@ def schedule(
     func: Optional[Callable] = None, *, interval: Union[timedelta, float]
 ) -> Callable:
     """
-    Schedule a period task with an interval. Can be used as a decorator.
+    Schedule a periodic task to be called after each interval. Can be used as a decorator.
 
     Args:
         func: The function to schedule. This parameter will be supplied implicitly when used as a decorator.
