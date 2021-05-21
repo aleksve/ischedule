@@ -62,21 +62,20 @@ from threading import Event
 start_time = time.time()
 stop_event = Event()
 
+@schedule(interval=0.1)
 def task_1():
     dt = time.time() - start_time
     print(f"Started a _fast_ task at t={dt:.2f}")
     if dt > 3:
         stop_event.set()
 
+@schedule(interval=0.5)
 def task_2():
     dt = time.time() - start_time
     if dt > 2:
         return
     print(f"Started a *slow* task at t={dt:.2f}")
     time.sleep(1)
-
-schedule(task_1, interval=0.1)
-schedule(task_2, interval=0.5)
 
 run_loop(stop_event=stop_event)
 print("Finished")
