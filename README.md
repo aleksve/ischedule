@@ -5,14 +5,14 @@ An elegant way to schedule periodic tasks in a Python program. Both the schedulu
 ```python
 from ischedule import schedule, run_loop
 
+
+schedule(interval=1.0)
 def task_1():
     print("task 1")
 
+@schedule(interval=0.2)
 def task_2():
     print("task 2")
-
-schedule(task_1, interval=1.0)
-schedule(task_2, interval=0.2)
 
 run_loop()
 ```
