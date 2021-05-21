@@ -1,8 +1,7 @@
-import time
 from datetime import timedelta
 from threading import Event
 from time import monotonic
-from typing import Callable, List, Union
+from typing import Callable, List, Optional, Union
 
 
 class _Task:
@@ -17,6 +16,10 @@ class _Task:
 
 
 _tasks: List[_Task] = []
+
+
+def reset():
+    _tasks.clear()
 
 
 def schedule(func: Callable, *, interval: Union[timedelta, float]):
@@ -49,22 +52,16 @@ def run_pending():
             task.func()
 
 
-def reset():
-    _tasks.clear()
-
-
-def run_loop(stop_event: Event = None):
+def run_loop(stop_event: Optional[Event] = None):
     """
-    Runs the pending tasks until the event is set.
+    Runs the pending tasks until the stop_event is set, or until an exception is raised by a task.
 
     Args:
-        stop_event: run until this event is set. If `None`, run until the program is terminated
+        stop_event: optionally provide an event that will trigger a clean return from the loop when set
 
     Raises:
-        TypeError: the supplied sleep_interval cannot be interpreted as a number of seconds
         Exception: All exceptions raised by the tasks will propagate through here
     """
-
     if stop_event is None:
         stop_event = Event()
     assert isinstance(stop_event, Event)
@@ -72,4 +69,5 @@ def run_loop(stop_event: Event = None):
     while not stop_event.is_set():
         run_pending()
         next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
-        time.sleep(max(0.0, next_call_time))
+        if next_call_time > 0:
+            stop_event.wait(next_call_time)
