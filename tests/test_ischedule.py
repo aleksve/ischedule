@@ -45,7 +45,7 @@ def check_time_slip():
         t_startup_time_dev += _PERIOD
 
     start_time_deviation = time.time() - t_startup_time_dev
-    _startup_time_deviations.append(start_time_deviation)
+    _startup_time_deviations.append(abs(start_time_deviation))
     time.sleep(_PERIOD / 2)
 
 
@@ -60,11 +60,11 @@ def test():
         f"max deviation: {max_startup_time_deviations}; mean deviation: {mean_deviation}"
     )
     assert (
-        max_startup_time_deviations <= 2e-3
+        max_startup_time_deviations <= 4e-3
     ), "The precision tolerance of max start time deviation was exceeded."
 
     assert (
-        mean_deviation <= 1e-4
+        mean_deviation <= 2e-4
     ), "The precision tolerance of mean start time deviation was exceeded."
 
 
