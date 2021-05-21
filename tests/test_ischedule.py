@@ -51,21 +51,25 @@ def check_time_slip():
 
 def test():
     stop_event = Event()
-    ischedule.schedule(partial(set_event_after, t=10, event=stop_event), interval=1)
+    ischedule.schedule(partial(set_event_after, t=100, event=stop_event), interval=1)
     ischedule.schedule(check_time_slip, interval=_PERIOD)
     ischedule.run_loop(stop_event)
     max_startup_time_deviations = max(_startup_time_deviations)
-    mean_deviation = sum(_startup_time_deviations) / len(_startup_time_deviations)
+    average_deviation = sum(_startup_time_deviations) / len(_startup_time_deviations)
+    median_deviation = sorted(_startup_time_deviations)[
+        len(_startup_time_deviations) // 2
+    ]
     print(
-        f"max deviation: {max_startup_time_deviations}; mean deviation: {mean_deviation}"
+        f"max deviation: {max_startup_time_deviations}; average deviation: {average_deviation}; "
+        f"median deviation: {median_deviation}"
     )
     assert (
         max_startup_time_deviations <= 4e-3
     ), "The precision tolerance of max start time deviation was exceeded."
 
     assert (
-        mean_deviation <= 2e-4
-    ), "The precision tolerance of mean start time deviation was exceeded."
+        average_deviation <= 2e-4
+    ), "The precision tolerance of average start time deviation was exceeded."
 
 
 skip_time = 0
