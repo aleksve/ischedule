@@ -102,6 +102,7 @@ Finished
 The fast task runs every 0.1 seconds, and completes quickly. When the slow task starts running at t=0.5, it doesn't return control until one second later, at t=1.50s. By that time, both the fast and the slow tasks become pending, and are executed in the order they were added to the scheduler. The slow task does not run after t=2.0, so the fast task returns to running normally every 0.1 seconds.
 
 **Limitations**
+
 If the scheduled tasks need to be run concurrently on different threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. 
 
 **Known issues**
