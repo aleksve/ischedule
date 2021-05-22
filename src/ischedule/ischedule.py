@@ -23,7 +23,7 @@ def reset():
     _tasks.clear()
 
 
-def schedule(func: Callable, *, interval: Union[timedelta, float]):
+def schedule(func: Callable, *, interval: Union[timedelta, float]) -> Callable:
     """
     Args:
         func: scheduled functions
@@ -31,11 +31,15 @@ def schedule(func: Callable, *, interval: Union[timedelta, float]):
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
+
+    Returns:
+        ```func``` exactly as it was.
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
         interval = timedelta(seconds=interval)
     _tasks.append(_Task(func, interval))
+    return func
 
 
 def run_pending():

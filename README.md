@@ -106,20 +106,16 @@ The fast task runs every 0.1 seconds, and completes quickly. When the slow task 
 If the scheduled tasks need to be run concurrently on different threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An example implementation is available in the tests folder on GitHub.
 
 **Decorator syntax**
-Functional syntax is preferred to decorator syntax, however both are supported. 
+
+Functional syntax was preferred to decorator syntax because it is easier to read. For projects that have to use decorators, use a single code line 
 ```python
-@schedule(interval=1)
+from ischedule import schedule
+from functools import partial
+
+@partial(schedule(interval=1))
 def task():
     pass
 ```
-is equivalent to
-```python
-def task():
-    pass
-schedule(task, interval=1)
-```
-
-
 
 **Known issues**
 
