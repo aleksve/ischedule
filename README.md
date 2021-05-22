@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in a Python program. Both the scheduler and the task run in the main thread, which avoids the issue of synchronizing the data access between tasks and simplifies exception handling.
+An elegant way to schedule periodic tasks in a Python program. No threads or procesees are created by this library, which avoids the issues of synchronizing the data access and coordinating exception handling between tasks. Both the user and the library code can therefore be made with much less complicated logic, which makes this library ideal for embedded and critical applications. 
 
 **Basic example**
 
@@ -37,17 +37,17 @@ Periodic scheduling has certain quirks that have been taken care of under the ho
 
 **What happens during heavy loading**
 
-* If more than one task become pending at the same time, they are executed in the order in which they were added to the schedule by `schedule()`.
+* If more than one task become pending simultaneously, they will be executed in the order in which they were added to the schedule by `schedule()`.
 * Regardless of the load, no task will be completely starved. All pending tasks will be executed as soon as possible after they become pending.
-* If the execution of a task is delayed that the next execution of the same task become pending, this execution will be skipped.
+* There is no build-up of delayed executions. If the execution of a task is delayed so much that the next execution of the same task become pending, an execution will be skipped. 
 
 **Exceptions**
 
-Exceptions during the execution are propagated out of `run_pending()`, and can be dealt with by the caller.
+Exceptions during the execution are propagated out of `run_loop()`/`run_pending()`, and can be dealt with by the caller.
 
 **Cancellable loops**
 
-If `run_loop()` is executed without parameters, it will continue running until the process is terminated. If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, run_loop will cleanly return to the caller after completing the currently pending tasks.
+If `run_loop()` is executed without parameters, it will continue running until the process is terminated. If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
 **More advanced example**
 
