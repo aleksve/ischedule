@@ -103,7 +103,7 @@ The fast task runs every 0.1 seconds, and completes quickly. When the slow task 
 
 **Limitations**
 
-If the scheduled tasks need to be run concurrently on different threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. 
+If the scheduled tasks need to be run concurrently on different threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An example implementation is available in the tests folder on GitHub.
 
 **Known issues**
 

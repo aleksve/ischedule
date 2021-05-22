@@ -1,4 +1,5 @@
 from datetime import timedelta
+from multiprocessing.synchronize import Event as mp_Event
 from threading import Event
 from time import monotonic
 from typing import Callable, List, Optional, Union
@@ -64,7 +65,7 @@ def run_loop(stop_event: Optional[Event] = None):
     """
     if stop_event is None:
         stop_event = Event()
-    assert isinstance(stop_event, Event)
+    assert isinstance(stop_event, Event) or isinstance(stop_event, mp_Event)
 
     while not stop_event.is_set():
         run_pending()
