@@ -31,7 +31,7 @@ task 2
 task 1
 ```
 
-**Implemnentation details**
+**Implementation details**
 
 Periodic scheduling has certain quirks that have been taken care of under the hood by ```ischedule```. For example, it accounts for the time it takes for the task function to execute. If a task is scheduled every second and takes 0.6 seconds to complete, there will be a delay of only 0.4 seconds between consecutive executions.  Delays are not propagated. If the previously-mentioned task is scheduled for execution at t=1 second, but is delayed by 0.3 seconds, the next execution of the same task will never the less be scheduled at t=2 seconds. 
 
