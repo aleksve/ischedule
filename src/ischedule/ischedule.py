@@ -1,5 +1,6 @@
 from datetime import timedelta
-from multiprocessing.synchronize import Event as mp_Event
+from functools import partial
+from multiprocessing.synchronize import Event as Event_mp
 from threading import Event
 from time import monotonic
 from typing import Callable, List, Optional, Union
@@ -33,13 +34,18 @@ def schedule(func: Callable, *, interval: Union[timedelta, float]) -> Callable:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
 
     Returns:
-        ```func``` exactly as it was.
+        Passes through `func` unmodified
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
         interval = timedelta(seconds=interval)
     _tasks.append(_Task(func, interval))
+
     return func
+
+
+def schedule_decorator(interval: Union[timedelta, float]) -> Callable:
+    return partial(schedule, interval=interval)
 
 
 def run_pending():
@@ -69,7 +75,7 @@ def run_loop(stop_event: Optional[Event] = None):
     """
     if stop_event is None:
         stop_event = Event()
-    assert isinstance(stop_event, Event) or isinstance(stop_event, mp_Event)
+    assert isinstance(stop_event, Event) or isinstance(stop_event, Event_mp)
 
     while not stop_event.is_set():
         run_pending()
