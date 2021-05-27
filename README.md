@@ -107,18 +107,25 @@ If the scheduled tasks need to be run concurrently on different threads, then th
 
 **Decorator syntax**
 
-Functional syntax was preferred to decorator syntax because it is easier to read. For projects that have to use decorators, use a single code line 
+Decorator syntax can optionally be used to schedule tasks: 
 ```python
-from ischedule import schedule
-from functools import partial
+import time
 
-@partial(schedule(interval=1))
+from src.ischedule import run_pending, schedule_decorator as schedule
+
+
+@schedule(interval=0.1)
 def task():
-    pass
+    print("Performing a task")
+
+
+def test():
+    time.sleep(0.1)
+    run_pending()
 ```
 
-**Known issues**
+**Feedback**
 
-None at this time. Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues.
+Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues. If you use and like this project, please consider [adding a star on GitHub](https://github.com/aleksve/ischedule). 
 
 [![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
