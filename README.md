@@ -124,6 +124,11 @@ def test():
     run_pending()
 ```
 
+**Timing Precision**
+Deviations from the scheduled time were thoroughly tested.
+In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 4 milliseconds. 
+Larger deviations in startup time, on the order of tens of milliseconds, are sometimes observred. 
+
 **Feedback**
 
 Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues. If you use and like this project, please consider [adding a star on GitHub](https://github.com/aleksve/ischedule). 
