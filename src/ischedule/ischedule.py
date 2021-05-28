@@ -63,12 +63,16 @@ def run_pending():
             task.func()
 
 
-def run_loop(stop_event: Optional[Event] = None):
+def run_loop(
+    stop_event: Optional[Event] = None,
+    return_after: Optional[Union[float, timedelta]] = float("inf"),
+):
     """
     Runs the pending tasks until the stop_event is set, or until an exception is raised by a task.
 
     Args:
         stop_event: optionally provide an event that will trigger a clean return from the loop when set
+        return_after: loop exits after a certain amount of time; especially useful for testing
 
     Raises:
         Exception: All exceptions raised by the tasks will propagate through here
@@ -77,7 +81,12 @@ def run_loop(stop_event: Optional[Event] = None):
         stop_event = Event()
     assert isinstance(stop_event, Event) or isinstance(stop_event, Event_mp)
 
-    while not stop_event.is_set():
+    start_time = monotonic()
+    if isinstance(return_after, timedelta):
+        # timedelta doesn't support float('inf')
+        return_after = return_after.total_seconds()
+
+    while not stop_event.is_set() and not monotonic() - start_time > return_after:
         run_pending()
         next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
         if next_call_time > 0:
