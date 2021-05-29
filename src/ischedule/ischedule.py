@@ -30,9 +30,22 @@ def schedule(
     """
     Schedule a function for periodic execution. Can be used as a function call or as a decorator.
 
+
+    As a function call:
+
+    def task():
+        print("task")
+    schedule(task, interval=1)
+
+    Equivalently, as a decorator:
+
+    @schedule(interval=1)
+    def task():
+        print("task")
+
     Args:
-        func: scheduled functions. If not supplied, returns a decorator.
-        interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
+        func: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
+        interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
