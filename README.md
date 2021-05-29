@@ -109,8 +109,6 @@ If the scheduled tasks need to be run concurrently on different threads, then th
 
 Decorator syntax can optionally be used to schedule tasks: 
 ```python
-import time
-
 from ischedule import run_loop, schedule
 
 
@@ -119,17 +117,17 @@ def task():
     print("Performing a task")
 
 
-def test():
-    run_loop(return_after=1)
+run_loop(return_after=1)
 ```
 
 **Timing Precision**
+
 Deviations from the scheduled time were thoroughly tested.
 In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 4 milliseconds. 
 Larger deviations in startup time, on the order of tens of milliseconds, are sometimes observed. 
 
 **Feedback**
 
-Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues. If you use and like this project, please consider [adding a star on GitHub](https://github.com/aleksve/ischedule). 
+Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues. If you use and like this project, please consider to [give it a star on GitHub](https://github.com/aleksve/ischedule). 
 
 [![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
