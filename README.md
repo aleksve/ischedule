@@ -137,7 +137,7 @@ run_loop(return_after=1)
 **Timing Precision**
 
 Deviations from the scheduled time were thoroughly tested.
-In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 4 milliseconds. 
+In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 5 milliseconds. 
 Larger deviations, on the order of tens of milliseconds, have been occasionally observed. 
 
 **Feedback**
