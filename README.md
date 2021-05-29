@@ -112,7 +112,7 @@ If the scheduled tasks need to be run concurrently on different threads, then th
 
 **Decorator syntax**
 
-Decorator syntax can optionally be used to schedule tasks: 
+Decorator syntax is supported for scheduling tasks: 
 ```python
 from ischedule import run_loop, schedule
 
