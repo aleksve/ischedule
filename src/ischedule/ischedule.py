@@ -24,28 +24,32 @@ def reset():
     _tasks.clear()
 
 
-def schedule(func: Callable, *, interval: Union[timedelta, float]) -> Callable:
+def schedule(
+    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
+) -> Callable:
     """
+    Schedule a function for periodic execution. Can be used as a function call or as a decorator.
+
     Args:
-        func: scheduled functions
+        func: scheduled functions. If not supplied, returns a decorator.
         interval: how often the function will be called. Either a `datetime.timedelta` or a number of seconds
 
     Raises:
         TypeError: The supplied interval cannot be interpreted as timedelta seconds
 
     Returns:
-        Passes through `func` unmodified
+        Passes the input `func` unmodified
     """
     if not isinstance(interval, timedelta):
         # Raises TypeError
         interval = timedelta(seconds=interval)
+
+    if func is None:
+        return partial(schedule, interval=interval)
+
     _tasks.append(_Task(func, interval))
 
     return func
-
-
-def schedule_decorator(interval: Union[timedelta, float]) -> Callable:
-    return partial(schedule, interval=interval)
 
 
 def run_pending():

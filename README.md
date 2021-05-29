@@ -111,7 +111,7 @@ Decorator syntax can optionally be used to schedule tasks:
 ```python
 import time
 
-from src.ischedule import run_pending, schedule_decorator as schedule
+from ischedule import run_loop, schedule
 
 
 @schedule(interval=0.1)
@@ -120,14 +120,13 @@ def task():
 
 
 def test():
-    time.sleep(0.1)
-    run_pending()
+    run_loop(return_after=1)
 ```
 
 **Timing Precision**
 Deviations from the scheduled time were thoroughly tested.
 In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 4 milliseconds. 
-Larger deviations in startup time, on the order of tens of milliseconds, are sometimes observred. 
+Larger deviations in startup time, on the order of tens of milliseconds, are sometimes observed. 
 
 **Feedback**
 

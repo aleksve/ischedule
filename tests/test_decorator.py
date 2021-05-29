@@ -1,14 +1,10 @@
-import time
-
-from src.ischedule import run_pending
-from src.ischedule import schedule_decorator as schedule
+from src.ischedule import run_loop, schedule
 
 
 @schedule(interval=0.1)
 def task():
-    print("x")
+    print("Performing a task")
 
 
 def test():
-    time.sleep(0.1)
-    run_pending()
+    run_loop(return_after=1)
