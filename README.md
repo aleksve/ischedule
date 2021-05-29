@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in a Python program. No threads or procesees are created by this library, which avoids the issues of synchronizing the data access and coordinating exception handling between tasks. Both the user and the library code can therefore be made with much less complicated logic, which makes this library ideal for embedded and critical applications. 
+An elegant way to schedule periodic tasks in a Python program. No threads or processes are created by this library, which avoids the issues of synchronizing the data access and coordinating exception handling between tasks. Both the user and the library code can therefore be made with relatively uncomplicated logic, which makes this library ideal for embedded and critical applications. 
 
 **Basic example**
 
@@ -37,7 +37,7 @@ Periodic scheduling has certain quirks that have been taken care of under the ho
 
 **What happens during heavy loading**
 
-Heavy loading means that the previous task is not complete before the next is scheduled to execute. Graceful handling of this condition is essential in a well-implemented periodic scheduler. 
+Heavy loading means that there is not enough computer resources to execute all tasks as scheduled. Graceful handling of this condition is essential in a well-implemented periodic scheduler. 
 * If more than one task become pending simultaneously, they will be executed in the order in which they were added to the schedule by `schedule()`.
 * Regardless of the load, no task will be completely starved. All pending tasks will be executed as soon as possible after they become pending.
 * There is no build-up of delayed executions. If the execution of a task is delayed so much that the next execution of the same task become pending, an execution will be skipped. 
@@ -48,7 +48,9 @@ Exceptions during the execution are propagated out of `run_loop()`/`run_pending(
 
 **Cancellable loops**
 
-If `run_loop()` is executed without parameters, it will continue running until the process is terminated. If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
+If `run_loop()` is executed without parameters, it will continue running until the process is terminated. 
+
+If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
 The call to `run_loop()` accepts a `return_after`parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
 
@@ -56,7 +58,7 @@ The call to `run_loop()` accepts a `return_after`parameter, which allows the loo
 
 In this example, two tasks are scheduled for periodic execution. The first one is scheduled with an interval of 0.1 seconds, and the second one is scheduled with an interval of 0.5 seconds. The second task takes a lot of time to complete, stress-testing the scheduler.
 
-```python
+```python3
 import time
 
 from ischedule import schedule, run_loop
@@ -109,13 +111,13 @@ Started a _fast_ task at t=3.000
 Started a *slow* task at t=3.000
 Finished
 ```
-The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler runs the pending tasks as soon as it gets back the control at t=1.41s. 
+The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler becomes overloaded. It adapts by running the pending tasks as soon as it gets back the control at t=1.41s. 
 
-After t=2.0s, the slow task changes to spend only 0.09 seconds, which is slow bud just fast enough not to create delays in the schedule. The scheduler is able to return to normal operation.
+After t=2.0s, the slow task changes to spend only 0.09 seconds. This is slow, but just fast enough not to create delays in the schedule. The scheduler is able to return to normal operation.
 
 **Limitations**
 
-If the scheduled tasks need to be run concurrently on different threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An example implementation is available in the tests folder on GitHub.
+If the scheduled tasks need to run concurrently on separate threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An example implementation is available in the tests folder on GitHub.
 
 **Decorator syntax**
 
@@ -136,7 +138,7 @@ run_loop(return_after=1)
 
 Deviations from the scheduled time were thoroughly tested.
 In a typical 1-minute run, the median deviation is below 0.2 milliseconds, and maximum deviations is below 4 milliseconds. 
-Larger deviations in startup time, on the order of tens of milliseconds, are sometimes observed. 
+Larger deviations, on the order of tens of milliseconds, have been occasionally observed. 
 
 **Feedback**
 
