@@ -140,6 +140,6 @@ Larger deviations in startup time, on the order of tens of milliseconds, are som
 
 **Feedback**
 
-Issues and suggestions can be submitted to https://github.com/aleksve/ischedule/issues. If you use and like this project, please consider to [give it a star on GitHub](https://github.com/aleksve/ischedule). 
+The project has its main [homepage on GitHub](https://github.com/aleksve/ischedule). Issues and suggestions can be submitted to [GitHub Issues](https://github.com/aleksve/ischedule/issues).  
 
 [![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
