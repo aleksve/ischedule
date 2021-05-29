@@ -73,10 +73,12 @@ def task_1():
 
 def task_2():
     dt = time.time() - start_time
-    if dt > 2:
-        return
     print(f"Started a *slow* task at t={dt:.3f}")
-    time.sleep(0.91)
+
+    if dt < 2:
+        time.sleep(0.91)
+    else:
+        time.sleep(0.09)
 
 schedule(task_1, interval=0.1)
 schedule(task_2, interval=0.5)
@@ -93,18 +95,23 @@ Started a _fast_ task at t=0.400
 Started a _fast_ task at t=0.500
 Started a *slow* task at t=0.500
 Started a _fast_ task at t=1.411
-Started a *slow* task at t=1.412
+Started a *slow* task at t=1.411
 Started a _fast_ task at t=2.323
-Started a _fast_ task at t=2.400
+Started a *slow* task at t=2.323
+Started a _fast_ task at t=2.413
 Started a _fast_ task at t=2.500
+Started a *slow* task at t=2.500
 Started a _fast_ task at t=2.600
 Started a _fast_ task at t=2.700
 Started a _fast_ task at t=2.800
 Started a _fast_ task at t=2.900
 Started a _fast_ task at t=3.000
+Started a *slow* task at t=3.000
 Finished
 ```
-The fast task runs every 0.1 seconds, and completes quickly. When the slow task starts running at t=0.5, it doesn't return control until 0.91 seconds, at t=1.41s. By that time, both the fast and the slow tasks become pending, and are executed as soon as possible in the order they were added to the scheduler. The slow task does not run after t=2.0, so the fast task returns to running normally every 0.1 seconds.
+The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler runs the pending tasks as soon as it gets back the control at t=1.41s. 
+
+After t=2.0s, the slow task changes to spend only 0.09 seconds, which is slow bud just fast enough not to create delays in the schedule. The scheduler is able to return to normal operation.
 
 **Limitations**
 

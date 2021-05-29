@@ -18,10 +18,12 @@ def test_example():
 
     def task_2():
         dt = time.time() - start_time
-        if dt > 2:
-            return
         print(f"Started a *slow* task at t={dt:.3f}")
-        time.sleep(0.91)
+
+        if dt < 2:
+            time.sleep(0.91)
+        else:
+            time.sleep(0.09)
 
     schedule(task_1, interval=0.1)
     schedule(task_2, interval=0.5)
