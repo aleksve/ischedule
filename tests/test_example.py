@@ -12,7 +12,7 @@ def test_example():
 
     def task_1():
         dt = time.time() - start_time
-        print(f"Started a _fast_ task at t={dt:.2f}")
+        print(f"Started a _fast_ task at t={dt:.3f}")
         if dt > 3:
             stop_event.set()
 
@@ -20,7 +20,7 @@ def test_example():
         dt = time.time() - start_time
         if dt > 2:
             return
-        print(f"Started a *slow* task at t={dt:.2f}")
+        print(f"Started a *slow* task at t={dt:.3f}")
         time.sleep(0.91)
 
     schedule(task_1, interval=0.1)
