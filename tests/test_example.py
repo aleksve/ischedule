@@ -10,23 +10,26 @@ def test_example():
     start_time = time.time()
     stop_event = Event()
 
-    def job_1():
+    def task_1():
         dt = time.time() - start_time
-        print(f"Started a _fast_ job at t={dt:.2f}")
+        print(f"Started a _fast_ task at t={dt:.3f}")
         if dt > 3:
             stop_event.set()
 
-    def job_2():
+    def task_2():
         dt = time.time() - start_time
-        if dt > 2:
-            return
-        print(f"Started a *slow* job at t={dt:.2f}")
-        time.sleep(1)
+        print(f"Started a *slow* task at t={dt:.3f}")
 
-    schedule(job_1, interval=0.1)
-    schedule(job_2, interval=0.5)
+        if dt < 2:
+            time.sleep(0.91)
+        else:
+            time.sleep(0.09)
+
+    schedule(task_1, interval=0.1)
+    schedule(task_2, interval=0.5)
 
     run_loop(stop_event=stop_event)
+    print("Finished")
 
 
 @pytest.fixture(autouse=True)
