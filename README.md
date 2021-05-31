@@ -62,16 +62,12 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 import time
 
 from ischedule import schedule, run_loop
-from threading import Event
 
 start_time = time.time()
-stop_event = Event()
 
 def task_1():
     dt = time.time() - start_time
     print(f"Started a _fast_ task at t={dt:.3f}")
-    if dt > 3:
-        stop_event.set()
 
 def task_2():
     dt = time.time() - start_time
