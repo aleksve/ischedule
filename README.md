@@ -85,7 +85,7 @@ def task_2():
 schedule(task_1, interval=0.1)
 schedule(task_2, interval=0.5)
 
-run_loop(stop_event=stop_event)
+run_loop(return_after=3)
 print("Finished")
 ```
 Output:
