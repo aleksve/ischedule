@@ -33,7 +33,7 @@ task 1
 
 **Implementational details**
 
-Quite importantly, and unlike some other packages, `ischedule` compensates for the time it takes for the task function to execute. For example, if a task that takes 0.9 seconds to complete is scheduled to run every second, the execution number 1000 will happen exactly 1000 seconds after the start of the program (± a few milliseconds).
+Quite importantly, and unlike some other packages, `ischedule` takes into account the time it takes for the task function to execute. For example, if a task that takes 0.9 seconds to complete is scheduled to run every second, the execution number 1000 will happen exactly 1000 seconds after the start of the program (± a few milliseconds).
 
 There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until it becomes due.  
 
@@ -54,7 +54,7 @@ If `run_loop()` is executed without parameters, it will continue running until t
 
 If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
-The call to `run_loop()` accepts a `return_after`parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
+The call to `run_loop()` accepts a `return_after` parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
 
 **More advanced example**
 
@@ -109,7 +109,7 @@ Started a _fast_ task at t=3.000
 Started a *slow* task at t=3.000
 Finished
 ```
-The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler becomes overloaded. It adapts by running the pending tasks as soon as it gets back the control at t=1.41s. 
+The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler becomes overloaded. It adapts by running the pending tasks as soon as it gets back the control at t=1.41s, and again at t=2.323. 
 
 After t=2.0s, the slow task changes to spend only 0.09 seconds. This is slow, but just fast enough not to create delays in the schedule. The scheduler is able to return to normal operation.
 
