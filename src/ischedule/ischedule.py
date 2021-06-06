@@ -94,7 +94,6 @@ def run_loop(
     Raises:
         Exception: All exceptions raised by the tasks will propagate through here
     """
-    user_stop_event = stop_event is not None
     if stop_event is None:
         stop_event = Event()
     assert isinstance(stop_event, Event) or isinstance(stop_event, Event_mp)
@@ -107,7 +106,6 @@ def run_loop(
     while not stop_event.is_set() and not monotonic() - start_time > return_after:
         run_pending()
         next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
-        if user_stop_event:
-            next_call_time = min(next_call_time, 0.5)
+        next_call_time = min(next_call_time, start_time + return_after)
         if next_call_time > 0:
             stop_event.wait(next_call_time)
