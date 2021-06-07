@@ -35,7 +35,7 @@ task 1
 
 Quite importantly, and unlike some other packages, `ischedule` takes into account the time it takes for the task function to execute. For example, if a task that takes 0.9 seconds to complete is scheduled to run every second, the execution number 1000 will happen exactly 1000 seconds after the start of the program (± a few milliseconds).
 
-There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until it becomes due.  
+There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until this happens.  
 
 **What happens during heavy loading**
 
