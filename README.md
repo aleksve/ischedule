@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in a Python program.
+An elegant way to schedule periodic tasks in a Python program. Simple syntax, precise execution.
 
 **Basic example**
 
