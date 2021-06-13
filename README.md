@@ -54,7 +54,7 @@ If `run_loop()` is executed without parameters, it will continue running until t
 
 If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
-The call to `run_loop()` accepts a `return_after` parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
+The call to `run_loop()` accepts an optinal parameter `return_after`, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
 
 **More advanced example**
 
