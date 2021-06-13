@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in a Python program. No threads or processes are created by this library, which avoids the issues of synchronizing the data access and coordinating exception handling between tasks. Both the user and the library code can therefore be made with relatively uncomplicated logic, which makes this library ideal for embedded and critical applications. 
+An elegant way to schedule periodic tasks in a Python program. Simple syntax, precise execution.
 
 **Basic example**
 
@@ -31,13 +31,15 @@ task 2
 task 1
 ```
 
-**Implementation details**
+**Implementational details**
 
-Periodic scheduling has certain quirks that have been taken care of under the hood by ```ischedule```. For example, it accounts for the time it takes for the task function to execute. If a task is scheduled every second and takes 0.6 seconds to complete, there will be a delay of only 0.4 seconds between consecutive executions.  Delays are not propagated. If the previously-mentioned task is scheduled for execution at t=1 second, but is delayed by 0.3 seconds, the next execution of the same task will nevertheless be scheduled at t=2 seconds. 
+Quite importantly, and unlike some other packages, `ischedule` takes into account the time it takes for the task function to execute. For example, if a task that takes 0.9 seconds to complete is scheduled to run every second, the execution number 1000 will happen exactly 1000 seconds after the start of the program (± a few milliseconds).
+
+There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until this happens.  
 
 **What happens during heavy loading**
 
-Heavy loading means that there is not enough computer resources to execute all tasks as scheduled. Graceful handling of this condition is essential in a well-implemented periodic scheduler. 
+Heavy loading means that there is not enough computer resources to execute all tasks as scheduled. For example, a task that is scheduled to run every second, could take more than a second to complete. Graceful handling of this condition is essential in a well-implemented periodic scheduler. 
 * If more than one task become pending simultaneously, they will be executed in the order in which they were added to the schedule by `schedule()`.
 * Regardless of the load, no task will be completely starved. All pending tasks will be executed as soon as possible after they become pending.
 * There is no build-up of delayed executions. If the execution of a task is delayed so much that the next execution of the same task become pending, an execution will be skipped. 
@@ -52,7 +54,7 @@ If `run_loop()` is executed without parameters, it will continue running until t
 
 If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
-The call to `run_loop()` accepts a `return_after`parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
+The call to `run_loop()` accepts an optinal parameter `return_after`, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
 
 **More advanced example**
 
@@ -62,16 +64,12 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 import time
 
 from ischedule import schedule, run_loop
-from threading import Event
 
 start_time = time.time()
-stop_event = Event()
 
 def task_1():
     dt = time.time() - start_time
     print(f"Started a _fast_ task at t={dt:.3f}")
-    if dt > 3:
-        stop_event.set()
 
 def task_2():
     dt = time.time() - start_time
@@ -85,7 +83,7 @@ def task_2():
 schedule(task_1, interval=0.1)
 schedule(task_2, interval=0.5)
 
-run_loop(stop_event=stop_event)
+run_loop(return_after=3)
 print("Finished")
 ```
 Output:
@@ -111,13 +109,13 @@ Started a _fast_ task at t=3.000
 Started a *slow* task at t=3.000
 Finished
 ```
-The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler becomes overloaded. It adapts by running the pending tasks as soon as it gets back the control at t=1.41s. 
+The fast task runs every 0.1 seconds, and completes quickly. The slow task is first scheduled for execution at t=0.5s. Initially it uses so much time that it blocks the other tasks from being executed. The scheduler becomes overloaded. It adapts by running the pending tasks as soon as it gets back the control at t=1.41s, and again at t=2.323. 
 
 After t=2.0s, the slow task changes to spend only 0.09 seconds. This is slow, but just fast enough not to create delays in the schedule. The scheduler is able to return to normal operation.
 
 **Limitations**
 
-If the scheduled tasks need to run concurrently on separate threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An example implementation is available in the tests folder on GitHub.
+If the scheduled tasks need to run concurrently on separate threads, then this package cannot be used. [Multiprocesseing parallelism](https://docs.python.org/3/library/multiprocessing.html) is however an excellent alternative in Python. An [example implementation of multiprocessing with ischedule](https://github.com/aleksve/ischedule/blob/master/tests/test_multiproc.py) is tested as part of every release.
 
 **Decorator syntax**
 
