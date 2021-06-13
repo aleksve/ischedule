@@ -1,4 +1,4 @@
-An elegant way to schedule periodic tasks in a Python program.
+An elegant way to schedule periodic tasks in a Python program. Simple syntax, precise execution.
 
 **Basic example**
 
@@ -35,7 +35,7 @@ task 1
 
 Quite importantly, and unlike some other packages, `ischedule` takes into account the time it takes for the task function to execute. For example, if a task that takes 0.9 seconds to complete is scheduled to run every second, the execution number 1000 will happen exactly 1000 seconds after the start of the program (± a few milliseconds).
 
-There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until it becomes due.  
+There is no busy waiting. Inside the `run_loop` method, `ischedule` calculates the time until the next task becomes pending, and idles the CPU until this happens.  
 
 **What happens during heavy loading**
 
@@ -54,7 +54,7 @@ If `run_loop()` is executed without parameters, it will continue running until t
 
 If the program needs to be able to cancel it, it should supply a `stop_event`, which is expected to be a `threading.Event`. When this event is set, `run_loop()` will cleanly return to the caller after completing the currently pending tasks.
 
-The call to `run_loop()` accepts a `return_after` parameter, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
+The call to `run_loop()` accepts an optinal parameter `return_after`, which allows the loop to return after a specified time, either as seconds or as a [datetime.timedelta](https://docs.python.org/3/library/datetime.html#datetime.timedelta). 
 
 **More advanced example**
 
