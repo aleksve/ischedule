@@ -105,7 +105,13 @@ def run_loop(
 
     while not stop_event.is_set() and not monotonic() - start_time > return_after:
         run_pending()
-        next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
-        next_call_time = min(next_call_time, start_time + return_after)
+
+        next_call_time_list = [t.next_call() for t in _tasks]
+        if len(next_call_time_list):
+            next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
+        else:
+            next_call_time = float('inf')
+        elapsed_time = monotonic()-start_time
+        next_call_time = min(next_call_time, elapsed_time - return_after)
         if next_call_time > 0:
             stop_event.wait(next_call_time)
