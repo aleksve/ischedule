@@ -1,3 +1,4 @@
+[![Downloads](https://pepy.tech/badge/ischedule)](https://pepy.tech/project/ischedule)[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 Schedule periodic tasks in a Python program. Simple syntax, precise execution.
 
 **Basic example**
@@ -142,7 +143,4 @@ Larger deviations, on the order of tens of milliseconds, have been occasionally 
 
 The project has its main [homepage on GitHub](https://github.com/aleksve/ischedule). Issues and suggestions can be submitted to [GitHub Issues](https://github.com/aleksve/ischedule/issues).  
 
-[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-[![Downloads](https://pepy.tech/badge/ischedule/month)](https://pepy.tech/project/ischedule)
 
-[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)
