@@ -110,8 +110,8 @@ def run_loop(
         if len(next_call_time_list):
             next_call_time = min([t.next_call() for t in _tasks]) - monotonic()
         else:
-            next_call_time = float('inf')
-        elapsed_time = monotonic()-start_time
+            next_call_time = float("inf")
+        elapsed_time = monotonic() - start_time
         next_call_time = min(next_call_time, elapsed_time - return_after)
         if next_call_time > 0:
             stop_event.wait(next_call_time)
