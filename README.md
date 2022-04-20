@@ -1,4 +1,4 @@
-[![Downloads](https://pepy.tech/badge/ischedule)](https://pepy.tech/project/ischedule)[![Python package](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
+[![Downloads](https://pepy.tech/badge/ischedule)](https://pepy.tech/project/ischedule)[![Python package](https://github.com/aleksve/ischedule/actions/workflows/package_checks.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
 Schedule periodic tasks in a Python program. Simple syntax, precise timing, no busy waiting. The project was originally made for an industrial automation and IoT application.
 
