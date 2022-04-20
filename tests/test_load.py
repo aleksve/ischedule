@@ -28,9 +28,9 @@ def abort_after(ev: Event):
 
 def check_cpuusage(q: Queue):
     while True:
-        cpu_usage = psutil.cpu_percent(percpu=True)
+        cpu_usage:list = psutil.cpu_percent(percpu=True)
         print(cpu_usage)
-        if max(cpu_usage) > 10:
+        if max(cpu_usage) > 25:
             q.put(max(cpu_usage))
         time.sleep(0.1)
 
@@ -53,7 +53,7 @@ def test_load():
         cpu_usage_overruns.append(q.get(block=False))
     assert (
         len(cpu_usage_overruns) < 3
-    ), f"CPU overuse detected three times: {cpu_usage_overruns}. Ischedule should run without consuming significant amounts of CPU, but this could also be caused by other applications in the system. Close other applications and re-run the test"
+    ), f"CPU overuse detected {len(cpu_usage_overruns)} times: {cpu_usage_overruns}. Ischedule should run without consuming significant amounts of CPU, but this could also be caused by other applications in the system. Close other applications and re-run the test"
 
 
 @pytest.fixture(autouse=True)
