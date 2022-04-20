@@ -112,6 +112,6 @@ def run_loop(
         else:
             next_call_time = float("inf")
         elapsed_time = monotonic() - start_time
-        next_call_time = min(next_call_time, elapsed_time - return_after)
+        next_call_time = min(next_call_time, return_after - elapsed_time)
         if next_call_time > 0:
             stop_event.wait(next_call_time)
