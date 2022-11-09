@@ -16,6 +16,17 @@ class _Task:
     def next_call(self) -> float:
         return self.previous_call + self.interval.total_seconds()
 
+    def run_if_pending(self, t):
+        intervals_since_last_call: float = (
+                                                   t - self.previous_call
+                                           ) / self.interval.total_seconds()
+        if intervals_since_last_call >= 1:
+            i_intervals_since_last_call = int(intervals_since_last_call)
+            self.previous_call += (
+                    self.interval.total_seconds() * i_intervals_since_last_call
+            )
+            self.missed_executions += i_intervals_since_last_call - 1
+            self.func()
 
 _tasks: List[_Task] = []
 
@@ -24,12 +35,9 @@ def reset():
     _tasks.clear()
 
 
-def schedule(
-    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
-) -> Callable:
+def every(*, interval: Union[timedelta, float], run_func: Optional[Callable] = None) -> Callable:
     """
-    Schedule a function for periodic execution. Can be used as a function call or as a decorator.
-
+    Schedule a function to run every `interval`. Can be used as a function call or as a decorator.
 
     As a function call:
 
@@ -44,7 +52,7 @@ def schedule(
         print("task")
 
     Args:
-        func: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
+        run_func: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
         interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
 
     Raises:
@@ -57,27 +65,21 @@ def schedule(
         # Raises TypeError
         interval = timedelta(seconds=interval)
 
-    if func is None:
-        return partial(schedule, interval=interval)
+    if run_func is None:
+        return partial(every, interval=interval)
 
-    _tasks.append(_Task(func, interval))
+    _tasks.append(_Task(run_func, interval))
 
-    return func
+    return run_func
 
 
 def run_pending():
     t = monotonic()
     for task in _tasks:
-        intervals_since_last_call: float = (
-            t - task.previous_call
-        ) / task.interval.total_seconds()
-        if intervals_since_last_call >= 1:
-            i_intervals_since_last_call = int(intervals_since_last_call)
-            task.previous_call += (
-                task.interval.total_seconds() * i_intervals_since_last_call
-            )
-            task.missed_executions += i_intervals_since_last_call - 1
-            task.func()
+        task.run_if_pending(t)
+
+
+
 
 
 def run_loop(

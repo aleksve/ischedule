@@ -1,6 +1,6 @@
 import multiprocessing
 
-from src.ischedule import run_loop, schedule
+from src.ischedule import run_loop, every
 
 
 def named_doer(name: str, stop_event: multiprocessing.Event):
@@ -10,8 +10,8 @@ def named_doer(name: str, stop_event: multiprocessing.Event):
     def do_y():
         print(f"{name} is doing y")
 
-    schedule(do_x, interval=0.1)
-    schedule(do_y, interval=0.14)
+    every(interval=0.1, run_func=do_x)
+    every(interval=0.14, run_func=do_y)
 
     run_loop(stop_event)
 

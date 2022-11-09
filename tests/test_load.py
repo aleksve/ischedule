@@ -8,7 +8,7 @@ from threading import Event
 import psutil
 import pytest
 
-from src.ischedule.ischedule import reset, run_loop, schedule
+from src.ischedule.ischedule import reset, run_loop, every
 
 
 def rec_fib(N: int):
@@ -36,10 +36,10 @@ def check_cpuusage(q: Queue):
 
 
 def test_load():
-    schedule(partial(rec_fib, 5), interval=1)
-    schedule(partial(rec_fib, 10), interval=2)
+    every(interval=1, run_func=partial(rec_fib, 5))
+    every(interval=2, run_func=partial(rec_fib, 10))
     ev = Event()
-    schedule(partial(abort_after, ev), interval=0.5)
+    every(interval=0.5, run_func=partial(abort_after, ev))
 
     q = Queue()
     cpu_mon_proc = multiprocessing.Process(
