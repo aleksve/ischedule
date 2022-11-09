@@ -16,6 +16,18 @@ class _Task:
     def next_call(self) -> float:
         return self.previous_call + self.interval.total_seconds()
 
+    def run_if_pending(self, t):
+        intervals_since_last_call: float = (
+            t - self.previous_call
+        ) / self.interval.total_seconds()
+        if intervals_since_last_call >= 1:
+            i_intervals_since_last_call = int(intervals_since_last_call)
+            self.previous_call += (
+                self.interval.total_seconds() * i_intervals_since_last_call
+            )
+            self.missed_executions += i_intervals_since_last_call - 1
+            self.func()
+
 
 _tasks: List[_Task] = []
 
@@ -28,6 +40,9 @@ def schedule(
     func: Optional[Callable] = None, *, interval: Union[timedelta, float]
 ) -> Callable:
     """
+    *** This function has been deprecated. Use make_periodic or decorator @periodic instead. ***
+
+
     Schedule a function for periodic execution. Can be used as a function call or as a decorator.
 
 
@@ -65,19 +80,52 @@ def schedule(
     return func
 
 
+def make_periodic(
+    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
+) -> Callable:
+    """
+    Register a function for periodic execution.
+
+    As a function call:
+
+    def task():
+        print("task")
+    make_periodic(task, interval=1)
+
+    Args:
+        func: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
+        interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
+
+    Raises:
+        TypeError: The supplied interval cannot be interpreted as timedelta seconds
+
+    Returns:
+        Passes the input `func` unmodified
+    """
+    if not isinstance(interval, timedelta):
+        # Raises TypeError
+        interval = timedelta(seconds=interval)
+
+    _tasks.append(_Task(func, interval))
+
+    return func
+
+
+def periodic(*, interval: Union[timedelta, float]):
+    """
+    Make a function periodic with decorator syntax. Internally, it calls "make_periodic". Example use:
+
+    @periodic(interval=1)
+    def task():
+        print("task")
+    """
+    return partial(make_periodic, interval=interval)
+
+
 def run_pending():
     t = monotonic()
     for task in _tasks:
-        intervals_since_last_call: float = (
-            t - task.previous_call
-        ) / task.interval.total_seconds()
-        if intervals_since_last_call >= 1:
-            i_intervals_since_last_call = int(intervals_since_last_call)
-            task.previous_call += (
-                task.interval.total_seconds() * i_intervals_since_last_call
-            )
-            task.missed_executions += i_intervals_since_last_call - 1
-            task.func()
+        task.run_if_pending(t)
 
 
 def run_loop(

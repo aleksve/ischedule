@@ -5,16 +5,19 @@ Schedule periodic tasks in a Python program. Simple syntax, precise timing, no b
 **Basic example**
 
 ```python
-from ischedule import schedule, run_loop
+from ischedule import make_periodic, run_loop
+
 
 def task_1():
     print("task 1")
 
+
 def task_2():
     print("task 2")
 
-schedule(task_1, interval=1.0)
-schedule(task_2, interval=0.2)
+
+make_periodic(task_1, interval=1.0)
+make_periodic(task_2, interval=0.2)
 
 run_loop()
 ```
@@ -65,13 +68,15 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 ```python3
 import time
 
-from ischedule import schedule, run_loop
+from ischedule import make_periodic, run_loop
 
 start_time = time.time()
+
 
 def task_1():
     dt = time.time() - start_time
     print(f"Started a _fast_ task at t={dt:.3f}")
+
 
 def task_2():
     dt = time.time() - start_time
@@ -82,8 +87,9 @@ def task_2():
     else:
         time.sleep(0.09)
 
-schedule(task_1, interval=0.1)
-schedule(task_2, interval=0.5)
+
+make_periodic(task_1, interval=0.1)
+make_periodic(task_2, interval=0.5)
 
 run_loop(return_after=3)
 print("Finished")
@@ -121,12 +127,13 @@ If the scheduled tasks need to run concurrently on separate threads, then this p
 
 **Decorator syntax**
 
-Decorator syntax is supported for scheduling tasks: 
+Decorator syntax is supported for scheduling tasks:
+
 ```python
-from ischedule import run_loop, schedule
+from ischedule import run_loop, periodic
 
 
-@schedule(interval=0.1)
+@periodic(interval=0.1)
 def task():
     print("Performing a task")
 

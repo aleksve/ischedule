@@ -40,10 +40,10 @@ def test_skip():
     """
     Test what happens when a task uses so much time that the next execution have to skip
     """
-    ischedule.schedule(
+    ischedule.make_periodic(
         partial(execute_N_times_and_throw_exception, N=N_seconds), interval=1
     )
-    ischedule.schedule(skip_execution, interval=skip_sched_time)
+    ischedule.make_periodic(skip_execution, interval=skip_sched_time)
 
     with pytest.raises(InterruptedError):
         while True:
@@ -52,7 +52,7 @@ def test_skip():
 
 
 def test_timedelta():
-    ischedule.schedule(
+    ischedule.make_periodic(
         partial(execute_N_times_and_throw_exception, N=10),
         interval=timedelta(milliseconds=100),
     )
@@ -76,7 +76,7 @@ def task_with_event_reset():
 
 
 def test_run_loop():
-    ischedule.schedule(task_with_event_reset, interval=timedelta(milliseconds=200))
+    ischedule.make_periodic(task_with_event_reset, interval=timedelta(milliseconds=200))
     ischedule.run_loop(stop_event=stop_event)
 
 

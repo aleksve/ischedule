@@ -1,7 +1,7 @@
-from src.ischedule import run_loop, schedule
+from src.ischedule import run_loop, periodic
 
 
-@schedule(interval=0.1)
+@periodic(interval=0.1)
 def task():
     print("Performing a task")
 
