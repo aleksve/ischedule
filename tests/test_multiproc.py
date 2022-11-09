@@ -10,8 +10,8 @@ def named_doer(name: str, stop_event: multiprocessing.Event):
     def do_y():
         print(f"{name} is doing y")
 
-    every(interval=0.1, run_func=do_x)
-    every(interval=0.14, run_func=do_y)
+    every(interval=0.1, run=do_x)
+    every(interval=0.14, run=do_y)
 
     run_loop(stop_event)
 

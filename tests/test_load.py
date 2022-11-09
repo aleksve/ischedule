@@ -36,10 +36,10 @@ def check_cpuusage(q: Queue):
 
 
 def test_load():
-    every(interval=1, run_func=partial(rec_fib, 5))
-    every(interval=2, run_func=partial(rec_fib, 10))
+    every(interval=1, run=partial(rec_fib, 5))
+    every(interval=2, run=partial(rec_fib, 10))
     ev = Event()
-    every(interval=0.5, run_func=partial(abort_after, ev))
+    every(interval=0.5, run=partial(abort_after, ev))
 
     q = Queue()
     cpu_mon_proc = multiprocessing.Process(

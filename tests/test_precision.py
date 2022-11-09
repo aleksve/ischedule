@@ -36,8 +36,8 @@ def check_time_slip():
 
 def test():
     stop_event = Event()
-    ischedule.every(interval=1, run_func=partial(set_event_after, t=10, event=stop_event))
-    ischedule.every(interval=_PERIOD, run_func=check_time_slip)
+    ischedule.every(interval=1, run=partial(set_event_after, t=10, event=stop_event))
+    ischedule.every(interval=_PERIOD, run=check_time_slip)
     ischedule.run_loop(stop_event)
     max_startup_time_deviations = max(_startup_time_deviations)
     average_deviation = sum(_startup_time_deviations) / len(_startup_time_deviations)

@@ -15,16 +15,16 @@ def task_2():
 
 
 def test_thread_1():
-    every(interval=0.1, run_func=task_1)
-    every(interval=0.2, run_func=task_2)
+    every(interval=0.1, run=task_1)
+    every(interval=0.2, run=task_2)
     stop_event = Event()
     Thread(target=lambda: [time.sleep(1), stop_event.set()]).start()
     run_loop(stop_event)
 
 
 def test_thread_2():
-    every(interval=0.1, run_func=task_1)
-    every(interval=0.2, run_func=task_2)
+    every(interval=0.1, run=task_1)
+    every(interval=0.2, run=task_2)
     stop = Event()
     Thread(target=run_loop, kwargs={"stop_event": stop}, daemon=False).start()
 

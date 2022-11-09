@@ -5,7 +5,7 @@ Schedule periodic tasks in a Python program. Simple syntax, precise timing, no b
 **Basic example**
 
 ```python
-from ischedule import schedule, run_loop
+from ischedule import every, run_loop
 
 def task_1():
     print("task 1")
@@ -13,8 +13,8 @@ def task_1():
 def task_2():
     print("task 2")
 
-schedule(task_1, interval=1.0)
-schedule(task_2, interval=0.2)
+every(interval=1.0, run_func=task_1)
+every(interval=0.2, run_func=task_2)
 
 run_loop()
 ```
@@ -65,7 +65,7 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 ```python3
 import time
 
-from ischedule import schedule, run_loop
+from ischedule import every, run_loop
 
 start_time = time.time()
 
@@ -82,8 +82,8 @@ def task_2():
     else:
         time.sleep(0.09)
 
-schedule(task_1, interval=0.1)
-schedule(task_2, interval=0.5)
+every(run_func=task_1, interval=0.1)
+every(run_func=task_2, interval=0.5)
 
 run_loop(return_after=3)
 print("Finished")
@@ -123,10 +123,10 @@ If the scheduled tasks need to run concurrently on separate threads, then this p
 
 Decorator syntax is supported for scheduling tasks: 
 ```python
-from ischedule import run_loop, schedule
+from ischedule import run_loop, every
 
 
-@schedule(interval=0.1)
+@every(interval=0.1)
 def task():
     print("Performing a task")
 

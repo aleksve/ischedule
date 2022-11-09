@@ -35,7 +35,7 @@ def reset():
     _tasks.clear()
 
 
-def every(*, interval: Union[timedelta, float], run_func: Optional[Callable] = None) -> Callable:
+def every(*, interval: Union[timedelta, float], run: Optional[Callable] = None) -> Callable:
     """
     Schedule a function to run every `interval`. Can be used as a function call or as a decorator.
 
@@ -43,16 +43,16 @@ def every(*, interval: Union[timedelta, float], run_func: Optional[Callable] = N
 
     def task():
         print("task")
-    schedule(task, interval=1)
+    every(interval=1, run=task)
 
     Equivalently, as a decorator:
 
-    @schedule(interval=1)
+    @every(interval=1)
     def task():
         print("task")
 
     Args:
-        run_func: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
+        run: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
         interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
 
     Raises:
@@ -65,12 +65,12 @@ def every(*, interval: Union[timedelta, float], run_func: Optional[Callable] = N
         # Raises TypeError
         interval = timedelta(seconds=interval)
 
-    if run_func is None:
+    if run is None:
         return partial(every, interval=interval)
 
-    _tasks.append(_Task(run_func, interval))
+    _tasks.append(_Task(run, interval))
 
-    return run_func
+    return run
 
 
 def run_pending():

@@ -25,8 +25,8 @@ def test_example():
         else:
             time.sleep(0.09)
 
-    every(interval=0.1, run_func=task_1)
-    every(interval=0.5, run_func=task_2)
+    every(interval=0.1, run=task_1)
+    every(interval=0.5, run=task_2)
 
     run_loop(stop_event=stop_event)
     print("Finished")
