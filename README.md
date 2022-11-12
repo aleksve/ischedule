@@ -5,13 +5,13 @@ Run periodic tasks in a Python program. Simple syntax, precise timing, no busy w
 **Basic example**
 
 ```python
-from ischedule import periodic, run_loop
+from ischedule import periodic, run_loop, interval
 
-@periodic(interval=1)
+@periodic(interval=interval(seconds=1))
 def task_1():
     print("task 1")
 
-@periodic(interval=0.2)
+@periodic(interval=interval(seconds=0.2))
 def task_2():
     print("task 2")
 
