@@ -40,7 +40,7 @@ def schedule(
     func: Optional[Callable] = None, *, interval: Union[timedelta, float]
 ) -> Callable:
     """
-    *** This function has been deprecated. Use make_periodic or decorator @periodic instead. ***
+    *** Deprecated. Use make_periodic or decorator @periodic instead. ***
 
 
     Schedule a function for periodic execution. Can be used as a function call or as a decorator.
@@ -68,21 +68,14 @@ def schedule(
     Returns:
         Passes the input `func` unmodified
     """
-    if not isinstance(interval, timedelta):
-        # Raises TypeError
-        interval = timedelta(seconds=interval)
 
     if func is None:
-        return partial(schedule, interval=interval)
-
-    _tasks.append(_Task(func, interval))
-
-    return func
+        return periodic(interval=interval)
+    else:
+        return make_periodic(func, interval=interval)
 
 
-def make_periodic(
-    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
-) -> Callable:
+def make_periodic(func: Callable, *, interval: Union[timedelta, float]) -> Callable:
     """
     Register a function for periodic execution.
 
@@ -113,7 +106,7 @@ def make_periodic(
 
 def periodic(*, interval: Union[timedelta, float]):
     """
-    Make a function periodic with decorator syntax. Internally, it calls "make_periodic". Example use:
+    A decorator to make a function periodic. In the following example, ´task()´ will run with an interval of 1 second.
 
     @periodic(interval=1)
     def task():
