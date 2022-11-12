@@ -7,14 +7,13 @@ Schedule periodic tasks in a Python program. Simple syntax, precise timing, no b
 ```python
 from ischedule import every, run_loop
 
+@every(interval=1.0)
 def task_1():
     print("task 1")
 
+@every(interval=0.2)
 def task_2():
     print("task 2")
-
-every(interval=1.0, run_func=task_1)
-every(interval=0.2, run_func=task_2)
 
 run_loop()
 ```

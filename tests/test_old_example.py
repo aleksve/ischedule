@@ -3,7 +3,7 @@ from threading import Event
 
 import pytest
 
-from src.ischedule.ischedule import reset, run_loop, every
+from src.ischedule.ischedule import reset, run_loop, every, schedule
 
 
 def test_example():
@@ -25,7 +25,7 @@ def test_example():
         else:
             time.sleep(0.09)
 
-    every(interval=0.1, run=task_1)
+    schedule(interval=0.1, task=task_1)
     every(interval=0.5, run=task_2)
 
     run_loop(stop_event=stop_event)

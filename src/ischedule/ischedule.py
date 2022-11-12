@@ -35,24 +35,30 @@ def reset():
     _tasks.clear()
 
 
-def every(*, interval: Union[timedelta, float], run: Optional[Callable] = None) -> Callable:
+
+def schedule(
+    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
+) -> Callable:
     """
-    Schedule a function to run every `interval`. Can be used as a function call or as a decorator.
+    Deprecated
+    """
+    if func is None:
+        return partial(make_periodic,interval=interval)
+    else:
+        return make_periodic(func, interval=interval)
 
-    As a function call:
+def make_periodic(
+    task: Optional[Callable], *, interval: Union[timedelta, float]
+) -> Callable:
+    """
+    Register a function for periodic execution.
 
     def task():
         print("task")
-    every(interval=1, run=task)
-
-    Equivalently, as a decorator:
-
-    @every(interval=1)
-    def task():
-        print("task")
+    make_periodic(task, interval=1)
 
     Args:
-        run: The function to be scheduled. If a function not supplied, the scheduler will act as a decorator.
+        task: The function to be scheduled.
         interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
 
     Raises:
@@ -65,21 +71,35 @@ def every(*, interval: Union[timedelta, float], run: Optional[Callable] = None) 
         # Raises TypeError
         interval = timedelta(seconds=interval)
 
-    if run is None:
-        return partial(every, interval=interval)
+    _tasks.append(_Task(task, interval))
 
-    _tasks.append(_Task(run, interval))
+    return task
 
-    return run
+def every(*, interval: Union[timedelta, float]) -> Callable:
+    """
+    Decorator that registers a function to run every `interval`.
+
+    @every(interval=1)
+    def task():
+        print("task")
+
+    Args:
+        interval: How often the function will be called. Either a `datetime.timedelta` or a number of seconds.
+
+    Raises:
+        TypeError: The supplied interval cannot be interpreted as timedelta seconds
+
+    Returns:
+        Passes the input `func` unmodified
+    """
+
+    return partial(make_periodic, interval=interval)
 
 
 def run_pending():
     t = monotonic()
     for task in _tasks:
         task.run_if_pending(t)
-
-
-
 
 
 def run_loop(
