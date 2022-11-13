@@ -5,13 +5,13 @@ Run periodic tasks in a Python program. Simple syntax, precise timing, no busy w
 **Basic example**
 
 ```python
-from ischedule import periodic, run_loop, interval
+from ischedule import periodic, run_loop
 
-@periodic(interval=interval(seconds=1))
+@periodic(interval=1)
 def task_1():
     print("task 1")
 
-@periodic(interval=interval(seconds=0.2))
+@periodic(interval=0.2)
 def task_2():
     print("task 2")
 
@@ -64,7 +64,7 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 ```python3
 import time
 
-from ischedule import make_periodic, run_loop
+from ischedule import make_periodic, run_loop, interval
 
 start_time = time.time()
 
@@ -84,7 +84,7 @@ def task_2():
         time.sleep(0.09)
 
 
-make_periodic(task_1, interval=0.1)
+make_periodic(task_1, interval=interval(milliseconds=100))
 make_periodic(task_2, interval=0.5)
 
 run_loop(return_after=3)
@@ -123,19 +123,42 @@ If the scheduled tasks need to run concurrently on separate threads, then this p
 
 **Decorator syntax**
 
-Decorator syntax is supported for scheduling tasks:
+Periodic tasks can be created equivalently with the decorator `@periodic` and with a call to `make_periodic`. These two methods can freely be mixed, for example:
 
 ```python
-from ischedule import run_loop, periodic
+from ischedule import run_loop, make_periodic, periodic
 
 
 @periodic(interval=0.1)
-def task():
+def task_1():
     print("Performing a task")
 
-
+def task_2():
+    print("Performing a task")
+make_periodic(task_2, interval=0.2)
+    
 run_loop(return_after=1)
 ```
+
+**Legacy support**
+
+Previous versions of `ischedule` used a function called `schedule` to create periodic tasks. It has been replaced by `@periodic` decorator and `make_periodic` function for improved clarity. The function `schedule` has been deprecated, and may be removed in the next version after at least six months. The following program will however still work:
+
+```python
+from ischedule import schedule, run_loop
+
+def task_1():
+    print("task 1")
+
+def task_2():
+    print("task 2")
+
+schedule(task_1, interval=1.0)
+schedule(task_2, interval=0.2)
+
+run_loop()
+```
+
 
 **Timing Precision**
 
