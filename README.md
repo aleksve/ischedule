@@ -1,8 +1,12 @@
 [![Downloads](https://pepy.tech/badge/ischedule/month)](https://pepy.tech/project/ischedule)[![Python package](https://github.com/aleksve/ischedule/actions/workflows/package_checks.yml/badge.svg)](https://github.com/aleksve/ischedule/actions/workflows/python-package.yml)[![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 
-Run periodic tasks in a Python program. Simple syntax, precise timing, no busy waiting. The project was originally made for an industrial automation and IoT application.
+Run periodic tasks in a Python program. Simple syntax, precise timing, no busy waiting.
+
+The project was originally made for an industrial automation and IoT application, and it emphasizes simplicity and reliability. There are no dependencies outside the standard library, and everything runs in a single thread. The code base is small and can reasonably be verified if used for business-critical applications.
 
 **Basic example**
+
+The following example runs two periodic tasks with the intervals of 1.0 and 0.2 seconds in a loop until the program is terminated.
 
 ```python
 from ischedule import periodic, run_loop
