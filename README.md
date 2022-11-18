@@ -146,7 +146,7 @@ run_loop(return_after=1)
 
 **Legacy support**
 
-Previous versions of `ischedule` used a function called `schedule` to create periodic tasks. It has been replaced by `@periodic` decorator and `make_periodic` function for improved clarity. The function `schedule` has been deprecated, and may be removed in the next version after at least six months. The following program will however still work:
+Previous versions of `ischedule` used a function called `schedule` to create periodic tasks. It has been replaced by `@periodic` decorator and `make_periodic` function to improve clarity. The function `schedule` has been deprecated. It may be removed in a future major version, but not before January 2024. The following program will continue working as before:
 
 ```python
 from ischedule import schedule, run_loop
