@@ -51,7 +51,7 @@ Heavy loading means that there is not enough computer resources to execute all t
 
 **Exceptions**
 
-Exceptions during the execution are propagated out of `run_loop()`/`run_pending()`, and can be dealt with by the caller.
+Exceptions raised by the tasks are propagated out of `run_loop()`/`run_pending()`, and can be dealt with by the caller.
 
 **Cancellable loops**
 
