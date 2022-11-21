@@ -1,7 +1,7 @@
 from math import isclose
 from time import monotonic
 
-from src.ischedule import reset, run_loop, schedule
+from src.ischedule import reset, run_loop, periodic
 
 
 def test_cancel_notasks():
@@ -12,7 +12,7 @@ def test_cancel_notasks():
 def test_cancel_longtast():
     reset()
 
-    @schedule(interval=2)
+    @periodic(interval=2)
     def task():
         print("Doing task")
 
