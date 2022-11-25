@@ -37,25 +37,14 @@ def reset():
 
 
 def schedule(
-    func: Optional[Callable] = None, *, interval: Union[timedelta, float]
-) -> Callable:
-    """
-    Deprecated
-    """
-    if func is None:
-        return partial(make_periodic,interval=interval)
-    else:
-        return make_periodic(func, interval=interval)
-
-def make_periodic(
-    task: Optional[Callable], *, interval: Union[timedelta, float]
+    task: Optional[Callable] = None, *, interval: Union[timedelta, float]
 ) -> Callable:
     """
     Register a function for periodic execution.
 
     def task():
         print("task")
-    make_periodic(task, interval=1)
+    schedule(task, interval=1)
 
     Args:
         task: The function to be scheduled.
@@ -67,6 +56,10 @@ def make_periodic(
     Returns:
         Passes the input `func` unmodified
     """
+    if task is None:
+        # Legacy support for use as decorator
+        return partial(schedule, interval=interval)
+
     if not isinstance(interval, timedelta):
         # Raises TypeError
         interval = timedelta(seconds=interval)
@@ -93,7 +86,7 @@ def every(*, interval: Union[timedelta, float]) -> Callable:
         Passes the input `func` unmodified
     """
 
-    return partial(make_periodic, interval=interval)
+    return partial(schedule, interval=interval)
 
 
 def run_pending():

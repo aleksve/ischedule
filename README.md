@@ -64,7 +64,7 @@ In this example, two tasks are scheduled for periodic execution. The first one i
 ```python3
 import time
 
-from ischedule import every, run_loop
+from ischedule import schedule, run_loop
 
 start_time = time.time()
 
@@ -81,8 +81,8 @@ def task_2():
     else:
         time.sleep(0.09)
 
-every(run_func=task_1, interval=0.1)
-every(run_func=task_2, interval=0.5)
+schedule(run_func=task_1, interval=0.1)
+schedule(run_func=task_2, interval=0.5)
 
 run_loop(return_after=3)
 print("Finished")
